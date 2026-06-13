@@ -8,6 +8,7 @@ import { useLocalTopicState } from '../utils/useLocalTopicState';
 export function HomePage() {
   const [query, setQuery] = useState('');
   const [priorityFilter, setPriorityFilter] = useState<string>('All topics');
+  const [savedOnly, setSavedOnly] = useState(false);
   const { completedTopics, favoriteTopics, toggleFavorite } = useLocalTopicState();
 
   const filteredTopics = useMemo(() => {
@@ -18,6 +19,7 @@ export function HomePage() {
 
     return grammarTopics.filter((topic) => {
       const matchesPriority = priorityFilter === 'All topics' || topic.priority === priorityFilter;
+      const matchesSaved = !savedOnly || favoriteTopics.includes(topic.id);
       const haystack = [
         topic.title,
         topic.shortDescription,
@@ -27,9 +29,9 @@ export function HomePage() {
         .join(' ')
         .toLowerCase();
 
-      return matchesPriority && haystack.includes(normalized);
+      return matchesPriority && matchesSaved && haystack.includes(normalized);
     });
-  }, [priorityFilter, query]);
+  }, [favoriteTopics, priorityFilter, query, savedOnly]);
 
   return (
     <div className="page-stack">
@@ -79,6 +81,14 @@ export function HomePage() {
             {label}
           </button>
         ))}
+        <button
+          type="button"
+          className={savedOnly ? 'filter-chip active' : 'filter-chip'}
+          onClick={() => setSavedOnly((current) => !current)}
+          aria-pressed={savedOnly}
+        >
+          {savedOnly ? 'Saved only' : 'Show saved only'}
+        </button>
       </section>
 
       {filteredTopics.length > 0 ? (

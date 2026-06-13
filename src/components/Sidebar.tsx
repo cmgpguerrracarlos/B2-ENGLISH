@@ -19,7 +19,7 @@ export function Sidebar() {
             to={`/topics/${topic.id}`}
             className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
           >
-            <span>{topic.title}</span>
+            <span className="sidebar-link-title">{topic.title}</span>
             <small>{topic.priority === 'Core B2 Grammar' ? 'Core' : topic.priority === 'Important Supporting Topic' ? 'Support' : 'Review'}</small>
           </NavLink>
         ))}
