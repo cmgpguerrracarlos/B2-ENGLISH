@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { PracticeCard } from '../components/PracticeCard';
 import { TopicProgress } from '../components/TopicProgress';
 import { TopicToc } from '../components/TopicToc';
+import { topicGuides } from '../data/topicGuides';
 import { grammarTopics, grammarTopicsById } from '../data/grammarTopics';
 import { useLocalTopicState } from '../utils/useLocalTopicState';
 
@@ -18,6 +19,7 @@ export function TopicPage() {
   const currentIndex = grammarTopics.findIndex((entry) => entry.id === topic.id);
   const previousTopic = currentIndex > 0 ? grammarTopics[currentIndex - 1] : null;
   const nextTopic = currentIndex < grammarTopics.length - 1 ? grammarTopics[currentIndex + 1] : null;
+  const guide = topicGuides[topic.id];
   const totalSections = 7;
   const solvedPracticeCount = topic.practiceQuestions.filter((question) => completedPractice.includes(question.id)).length;
   const completedSections = Math.min(
@@ -60,8 +62,50 @@ export function TopicPage() {
           totalPractice={topic.practiceQuestions.length}
         />
 
+        {guide ? (
+          <section className="study-toolkit">
+            <article className="toolkit-lead">
+              <p className="eyebrow">Study toolkit</p>
+              <h3>How to approach this topic</h3>
+              <p>{guide.coachNote}</p>
+            </article>
+            <article className="toolkit-card">
+              <h4>Exam triggers</h4>
+              <ul className="stack-list">
+                {guide.examTriggers.map((trigger) => (
+                  <li key={trigger}>{trigger}</li>
+                ))}
+              </ul>
+            </article>
+            <article className="toolkit-card">
+              <h4>Quick fixes</h4>
+              <ul className="stack-list">
+                {guide.quickFixes.map((fix) => (
+                  <li key={fix}>{fix}</li>
+                ))}
+              </ul>
+            </article>
+            <article className="toolkit-card">
+              <h4>Suggested study route</h4>
+              <ol className="stack-list numbered-list">
+                {guide.studyRoute.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+            </article>
+            <article className="toolkit-spotlight">
+              <h4>Example spotlight</h4>
+              <p className="example-sentence">{guide.exampleSpotlight.title}</p>
+              <p>{guide.exampleSpotlight.whyItWorks}</p>
+            </article>
+          </section>
+        ) : null}
+
         <section className="content-panel" id="theory">
-          <h3>Learning objectives</h3>
+          <div className="section-header">
+            <h3>Learning objectives</h3>
+            <span>{topic.theorySections.length} theory blocks</span>
+          </div>
           <ul className="bullet-list">
             {topic.learningObjectives.map((objective) => (
               <li key={objective}>{objective}</li>
@@ -153,6 +197,27 @@ export function TopicPage() {
               <li key={point}>{point}</li>
             ))}
           </ul>
+        </section>
+
+        <section className="content-panel summary-panel">
+          <div className="section-header">
+            <h3>At a glance</h3>
+            <span>Fast recap</span>
+          </div>
+          <div className="summary-grid">
+            <article>
+              <strong>{topic.grammarRules.length}</strong>
+              <p>rules to anchor the topic</p>
+            </article>
+            <article>
+              <strong>{topic.commonMistakes.length}</strong>
+              <p>realistic mistakes to self-check</p>
+            </article>
+            <article>
+              <strong>{solvedPracticeCount}</strong>
+              <p>practice tasks solved locally</p>
+            </article>
+          </div>
         </section>
 
         <section className="topic-footer-nav">
