@@ -4,9 +4,11 @@ import { TopicProgress } from '../components/TopicProgress';
 import { TopicToc } from '../components/TopicToc';
 import { topicGuides } from '../data/topicGuides';
 import { grammarTopics, grammarTopicsById } from '../data/grammarTopics';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalTopicState } from '../utils/useLocalTopicState';
 import { priorityShortLabel } from '../utils/topicUi';
+
+const topicViewKey = 'b2-grammar-topic-view';
 
 export function TopicPage() {
   const [activeView, setActiveView] = useState<'learn' | 'practice'>('learn');
@@ -16,12 +18,31 @@ export function TopicPage() {
     completedTopics,
     completedPractice,
     reviewedSections,
-    markTopicCompleted,
+    toggleTopicCompleted,
     favoriteTopics,
     toggleFavorite,
     togglePracticeCompleted,
     toggleSectionReviewed,
   } = useLocalTopicState();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const storedView = window.localStorage.getItem(topicViewKey);
+    if (storedView === 'learn' || storedView === 'practice') {
+      setActiveView(storedView);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(topicViewKey, activeView);
+  }, [activeView]);
 
   if (!topic) {
     return <Navigate to="/not-found" replace />;
@@ -83,7 +104,12 @@ export function TopicPage() {
             <button type="button" className="secondary-button" onClick={() => toggleFavorite(topic.id)}>
               {favoriteTopics.includes(topic.id) ? 'Saved' : 'Save'}
             </button>
-            <button type="button" className="primary-button" onClick={() => markTopicCompleted(topic.id)}>
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => toggleTopicCompleted(topic.id)}
+              aria-pressed={isTopicCompleted}
+            >
               {isTopicCompleted ? 'Completed' : 'Complete'}
             </button>
           </div>

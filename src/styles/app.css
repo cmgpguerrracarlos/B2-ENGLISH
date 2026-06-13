@@ -597,7 +597,7 @@
 }
 
 .content-accordion[open] .accordion-summary::after {
-  content: '−';
+  content: '-';
 }
 
 .accordion-content {

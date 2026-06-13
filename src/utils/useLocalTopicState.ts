@@ -39,6 +39,14 @@ export function useLocalTopicState() {
     });
   };
 
+  const toggleTopicCompleted = (topicId: string) => {
+    setCompletedTopics((current) => {
+      const next = current.includes(topicId) ? current.filter((entry) => entry !== topicId) : [...current, topicId];
+      window.localStorage.setItem(completedKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
   const toggleFavorite = (topicId: string) => {
     setFavoriteTopics((current) => {
       const next = current.includes(topicId) ? current.filter((entry) => entry !== topicId) : [...current, topicId];
@@ -73,6 +81,7 @@ export function useLocalTopicState() {
     completedPractice,
     reviewedSections,
     markTopicCompleted,
+    toggleTopicCompleted,
     toggleFavorite,
     togglePracticeCompleted,
     toggleSectionReviewed,
