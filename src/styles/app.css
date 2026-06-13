@@ -37,6 +37,10 @@
   margin-bottom: 1.5rem;
 }
 
+.sidebar-mobile-bar {
+  display: contents;
+}
+
 .brand-mark {
   width: 3rem;
   height: 3rem;
@@ -90,6 +94,10 @@
 
 .sidebar-link small {
   color: var(--sidebar-soft);
+}
+
+.sidebar-toggle {
+  display: none;
 }
 
 .app-main {
@@ -693,6 +701,9 @@
   .sidebar {
     position: static;
     height: auto;
+    padding: 0.95rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-soft);
   }
 
   .topic-layout {
@@ -715,6 +726,85 @@
 }
 
 @media (max-width: 760px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    backdrop-filter: blur(16px);
+  }
+
+  .sidebar-mobile-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .brand {
+    margin-bottom: 0;
+  }
+
+  .sidebar-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--sidebar-card);
+    color: var(--sidebar-text);
+  }
+
+  .sidebar-toggle span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sidebar-soft);
+  }
+
+  .sidebar-toggle strong {
+    font-size: 0.96rem;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .sidebar-nav {
+    display: none;
+  }
+
+  .sidebar-nav.is-open {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.6rem;
+    padding-top: 0.2rem;
+  }
+
+  .sidebar-title {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .sidebar-link {
+    min-height: 4.2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0.9rem 0.95rem;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link:focus-visible,
+  .sidebar-link.active {
+    transform: none;
+  }
+
+  .sidebar-link-title {
+    max-width: none;
+  }
+
   .app-main {
     padding: 1rem;
   }

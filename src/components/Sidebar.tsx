@@ -1,17 +1,44 @@
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { grammarTopics } from '../data/grammarTopics';
 
 export function Sidebar() {
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
+  const activeTopic =
+    grammarTopics.find((topic) => location.pathname === `/topics/${topic.id}`)?.title ?? 'Browse topics';
+
   return (
     <aside className="sidebar">
-      <NavLink className="brand" to="/">
-        <span className="brand-mark">B2</span>
-        <span>
-          <strong>Grammar Lab</strong>
-          <small>Study map</small>
-        </span>
-      </NavLink>
-      <nav className="sidebar-nav" aria-label="Grammar topics">
+      <div className="sidebar-mobile-bar">
+        <NavLink className="brand" to="/">
+          <span className="brand-mark">B2</span>
+          <span>
+            <strong>Grammar Lab</strong>
+            <small>Study map</small>
+          </span>
+        </NavLink>
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={() => setIsMenuOpen((current) => !current)}
+          aria-expanded={isMenuOpen}
+          aria-controls="grammar-topic-nav"
+        >
+          <span>Topics</span>
+          <strong>{activeTopic}</strong>
+        </button>
+      </div>
+      <nav
+        id="grammar-topic-nav"
+        className={isMenuOpen ? 'sidebar-nav is-open' : 'sidebar-nav'}
+        aria-label="Grammar topics"
+      >
         <p className="sidebar-title">Topics</p>
         {grammarTopics.map((topic) => (
           <NavLink
