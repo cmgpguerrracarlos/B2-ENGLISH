@@ -7,6 +7,7 @@ import { useLocalTopicState } from '../utils/useLocalTopicState';
 
 export function HomePage() {
   const [query, setQuery] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState<string>('All topics');
   const { completedTopics, favoriteTopics, toggleFavorite } = useLocalTopicState();
 
   const filteredTopics = useMemo(() => {
@@ -16,6 +17,7 @@ export function HomePage() {
     }
 
     return grammarTopics.filter((topic) => {
+      const matchesPriority = priorityFilter === 'All topics' || topic.priority === priorityFilter;
       const haystack = [
         topic.title,
         topic.shortDescription,
@@ -25,9 +27,9 @@ export function HomePage() {
         .join(' ')
         .toLowerCase();
 
-      return haystack.includes(normalized);
+      return matchesPriority && haystack.includes(normalized);
     });
-  }, [query]);
+  }, [priorityFilter, query]);
 
   return (
     <div className="page-stack">
@@ -65,6 +67,19 @@ export function HomePage() {
       </section>
 
       <SearchBar value={query} onChange={setQuery} />
+
+      <section className="filter-row" aria-label="Priority filters">
+        {['All topics', 'Core B2 Grammar', 'Important Supporting Topic', 'Review Topic'].map((label) => (
+          <button
+            key={label}
+            type="button"
+            className={priorityFilter === label ? 'filter-chip active' : 'filter-chip'}
+            onClick={() => setPriorityFilter(label)}
+          >
+            {label}
+          </button>
+        ))}
+      </section>
 
       {filteredTopics.length > 0 ? (
         <section className="topic-grid">

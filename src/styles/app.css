@@ -193,6 +193,25 @@
   background: rgba(255, 255, 255, 0.85);
 }
 
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.filter-chip {
+  border: 1px solid rgba(29, 36, 51, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  color: #22304a;
+  border-radius: 999px;
+  padding: 0.65rem 0.95rem;
+}
+
+.filter-chip.active {
+  background: #173b48;
+  color: #f8fafc;
+}
+
 .topic-grid,
 .practice-grid,
 .theory-grid,
@@ -302,7 +321,8 @@
 .secondary-button,
 .primary-link,
 .secondary-link,
-.practice-card button {
+.practice-card button,
+.filter-chip {
   border: none;
   border-radius: 999px;
   padding: 0.7rem 1rem;
@@ -312,7 +332,8 @@
 .favorite-button,
 .secondary-button,
 .secondary-link,
-.practice-card button {
+.practice-card button,
+.filter-chip {
   background: #edf1f8;
   color: #20324e;
 }
@@ -333,7 +354,8 @@
 .primary-link:hover,
 .secondary-link:hover,
 .favorite-button:hover,
-.practice-card button:hover {
+.practice-card button:hover,
+.filter-chip:hover {
   transform: translateY(-1px);
 }
 
@@ -352,6 +374,11 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #f2a85b, #63a89f);
+}
+
+.progress-note {
+  margin: 0;
+  color: #4d5564;
 }
 
 .content-panel {
@@ -388,6 +415,18 @@
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.practice-complete-button.active {
+  background: #d9efe7;
+  color: #0f6f4d;
 }
 
 .option-list {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 const completedKey = 'b2-grammar-completed-topics';
 const favoritesKey = 'b2-grammar-favorite-topics';
+const completedPracticeKey = 'b2-grammar-completed-practice';
 
 const readStoredArray = (key: string) => {
   if (typeof window === 'undefined') {
@@ -19,10 +20,12 @@ const readStoredArray = (key: string) => {
 export function useLocalTopicState() {
   const [completedTopics, setCompletedTopics] = useState<string[]>([]);
   const [favoriteTopics, setFavoriteTopics] = useState<string[]>([]);
+  const [completedPractice, setCompletedPractice] = useState<string[]>([]);
 
   useEffect(() => {
     setCompletedTopics(readStoredArray(completedKey));
     setFavoriteTopics(readStoredArray(favoritesKey));
+    setCompletedPractice(readStoredArray(completedPracticeKey));
   }, []);
 
   const markTopicCompleted = (topicId: string) => {
@@ -41,10 +44,22 @@ export function useLocalTopicState() {
     });
   };
 
+  const togglePracticeCompleted = (practiceId: string) => {
+    setCompletedPractice((current) => {
+      const next = current.includes(practiceId)
+        ? current.filter((entry) => entry !== practiceId)
+        : [...current, practiceId];
+      window.localStorage.setItem(completedPracticeKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
   return {
     completedTopics,
     favoriteTopics,
+    completedPractice,
     markTopicCompleted,
     toggleFavorite,
+    togglePracticeCompleted,
   };
 }

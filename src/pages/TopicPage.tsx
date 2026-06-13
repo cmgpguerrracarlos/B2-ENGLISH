@@ -8,7 +8,8 @@ import { useLocalTopicState } from '../utils/useLocalTopicState';
 export function TopicPage() {
   const { topicId } = useParams();
   const topic = topicId ? grammarTopicsById[topicId] : undefined;
-  const { completedTopics, markTopicCompleted, favoriteTopics, toggleFavorite } = useLocalTopicState();
+  const { completedTopics, completedPractice, markTopicCompleted, favoriteTopics, toggleFavorite, togglePracticeCompleted } =
+    useLocalTopicState();
 
   if (!topic) {
     return <Navigate to="/not-found" replace />;
@@ -18,7 +19,11 @@ export function TopicPage() {
   const previousTopic = currentIndex > 0 ? grammarTopics[currentIndex - 1] : null;
   const nextTopic = currentIndex < grammarTopics.length - 1 ? grammarTopics[currentIndex + 1] : null;
   const totalSections = 7;
-  const completedSections = completedTopics.includes(topic.id) ? totalSections : 5;
+  const solvedPracticeCount = topic.practiceQuestions.filter((question) => completedPractice.includes(question.id)).length;
+  const completedSections = Math.min(
+    totalSections,
+    (completedTopics.includes(topic.id) ? 5 : 3) + Math.round((solvedPracticeCount / topic.practiceQuestions.length) * 2),
+  );
 
   return (
     <div className="topic-layout">
@@ -48,7 +53,12 @@ export function TopicPage() {
           </div>
         </section>
 
-        <TopicProgress totalSections={totalSections} completedSections={completedSections} />
+        <TopicProgress
+          totalSections={totalSections}
+          completedSections={completedSections}
+          practiceSolved={solvedPracticeCount}
+          totalPractice={topic.practiceQuestions.length}
+        />
 
         <section className="content-panel" id="theory">
           <h3>Learning objectives</h3>
@@ -126,7 +136,12 @@ export function TopicPage() {
           </div>
           <div className="practice-grid">
             {topic.practiceQuestions.map((question) => (
-              <PracticeCard key={question.id} question={question} />
+              <PracticeCard
+                key={question.id}
+                question={question}
+                isCompleted={completedPractice.includes(question.id)}
+                onToggleCompleted={togglePracticeCompleted}
+              />
             ))}
           </div>
         </section>

@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { GrammarTopic } from '../types/grammar';
+import { grammarTopicsById } from '../data/grammarTopics';
 
 type TopicTocProps = {
   topic: GrammarTopic;
@@ -26,9 +28,9 @@ export function TopicToc({ topic }: TopicTocProps) {
       <div className="related-topics">
         <p className="sidebar-title">Related</p>
         {topic.relatedTopics.map((related) => (
-          <a key={related} href={`/topics/${related}`}>
-            {related.replace(/-/g, ' ')}
-          </a>
+          <Link key={related} to={`/topics/${related}`}>
+            {grammarTopicsById[related]?.title ?? related.replace(/-/g, ' ')}
+          </Link>
         ))}
       </div>
     </aside>
