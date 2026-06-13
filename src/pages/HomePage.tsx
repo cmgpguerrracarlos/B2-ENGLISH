@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { SearchBar } from '../components/SearchBar';
 import { TopicCard } from '../components/TopicCard';
 import { grammarTopics } from '../data/grammarTopics';
-import { topicCategories } from '../data/topicMeta';
+import { studyRecommendations, topicCategories } from '../data/topicMeta';
 import { topicQualitySummary, topicQualityTotals } from '../data/topicQuality';
 import { useLocalTopicState } from '../utils/useLocalTopicState';
 
@@ -158,20 +158,39 @@ export function HomePage() {
         </div>
 
         {insightView === 'guide' ? (
-          <section className="category-strip" aria-label="Topic priorities">
-            {topicCategories.map((category) => (
-              <article key={category.label}>
-                <span className={`badge badge-${category.label.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
-                  {category.label === 'Core B2 Grammar'
-                    ? 'Core'
-                    : category.label === 'Important Supporting Topic'
-                      ? 'Support'
-                      : 'Review'}
-                </span>
-                <p>{category.description}</p>
-              </article>
-            ))}
-          </section>
+          <>
+            <section className="category-strip" aria-label="Topic priorities">
+              {topicCategories.map((category) => (
+                <article key={category.label}>
+                  <span className={`badge badge-${category.label.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
+                    {category.label === 'Core B2 Grammar'
+                      ? 'Core'
+                      : category.label === 'Important Supporting Topic'
+                        ? 'Support'
+                        : 'Review'}
+                  </span>
+                  <p>{category.description}</p>
+                </article>
+              ))}
+            </section>
+            <section className="quality-panel" aria-label="Suggested study pathway">
+              <div className="section-header">
+                <div>
+                  <p className="eyebrow">Teacher pathway</p>
+                  <h3>Suggested order</h3>
+                </div>
+                <span>From structure to accuracy</span>
+              </div>
+              <div className="quality-grid">
+                {studyRecommendations.map((item) => (
+                  <article key={item.title} className="quality-card">
+                    <strong>{item.title}</strong>
+                    <p>{item.description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </>
         ) : null}
 
         {insightView === 'progress' ? (

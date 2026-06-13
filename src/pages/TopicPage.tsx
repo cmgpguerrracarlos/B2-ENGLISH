@@ -165,6 +165,22 @@ export function TopicPage() {
                 ))}
               </ol>
             </article>
+            <article className="toolkit-card">
+              <h4>Self-check</h4>
+              <ul className="stack-list">
+                {guide.selfCheck.map((question) => (
+                  <li key={question}>{question}</li>
+                ))}
+              </ul>
+            </article>
+            <article className="toolkit-card">
+              <h4>Exam use</h4>
+              <ul className="stack-list">
+                {guide.examTaskFocus.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
             <article className="toolkit-spotlight">
               <h4>Key example</h4>
               <p className="example-sentence">{guide.exampleSpotlight.title}</p>
