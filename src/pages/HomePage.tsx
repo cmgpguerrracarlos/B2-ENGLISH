@@ -12,12 +12,14 @@ export function HomePage() {
   const [savedOnly, setSavedOnly] = useState(false);
   const { completedTopics, favoriteTopics, completedPractice, toggleFavorite } = useLocalTopicState();
 
+  const resetFilters = () => {
+    setQuery('');
+    setPriorityFilter('All topics');
+    setSavedOnly(false);
+  };
+
   const filteredTopics = useMemo(() => {
     const normalized = query.trim().toLowerCase();
-    if (!normalized) {
-      return grammarTopics;
-    }
-
     return grammarTopics.filter((topic) => {
       const matchesPriority = priorityFilter === 'All topics' || topic.priority === priorityFilter;
       const matchesSaved = !savedOnly || favoriteTopics.includes(topic.id);
@@ -30,7 +32,9 @@ export function HomePage() {
         .join(' ')
         .toLowerCase();
 
-      return matchesPriority && matchesSaved && haystack.includes(normalized);
+      const matchesQuery = !normalized || haystack.includes(normalized);
+
+      return matchesPriority && matchesSaved && matchesQuery;
     });
   }, [favoriteTopics, priorityFilter, query, savedOnly]);
 
@@ -152,6 +156,9 @@ export function HomePage() {
         <section className="empty-state">
           <h3>No topics match that search yet.</h3>
           <p>Try a broader term like tenses, articles, or modal.</p>
+          <button type="button" className="primary-button" onClick={resetFilters}>
+            Reset filters
+          </button>
         </section>
       )}
     </div>

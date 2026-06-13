@@ -41,3 +41,10 @@ a {
 button {
   cursor: pointer;
 }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(242, 168, 91, 0.9);
+  outline-offset: 3px;
+}

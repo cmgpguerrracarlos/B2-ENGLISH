@@ -18,6 +18,7 @@ export function TopicCard({ topic, isCompleted, isFavorite, onToggleFavorite }: 
           className={isFavorite ? 'favorite-button active' : 'favorite-button'}
           onClick={() => onToggleFavorite(topic.id)}
           aria-pressed={isFavorite}
+          aria-label={isFavorite ? `Remove ${topic.title} from saved topics` : `Save ${topic.title}`}
         >
           {isFavorite ? 'Saved' : 'Save'}
         </button>
