@@ -10,7 +10,7 @@ export function HomePage() {
   const [query, setQuery] = useState('');
   const [priorityFilter, setPriorityFilter] = useState<string>('All topics');
   const [savedOnly, setSavedOnly] = useState(false);
-  const { completedTopics, favoriteTopics, toggleFavorite } = useLocalTopicState();
+  const { completedTopics, favoriteTopics, completedPractice, toggleFavorite } = useLocalTopicState();
 
   const filteredTopics = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -58,6 +58,26 @@ export function HomePage() {
             <span>Completed</span>
           </div>
         </div>
+      </section>
+
+      <section className="progress-snapshot" aria-label="Local study progress">
+        <article>
+          <p className="eyebrow">Phase 11 local progress</p>
+          <h3>Your browser progress</h3>
+          <p>Progress is stored locally with no login, so you can keep track of study momentum on this device.</p>
+        </article>
+        <article>
+          <strong>{favoriteTopics.length}</strong>
+          <span>Saved topics</span>
+        </article>
+        <article>
+          <strong>{completedPractice.length}</strong>
+          <span>Practice tasks solved</span>
+        </article>
+        <article>
+          <strong>{completedTopics.length}</strong>
+          <span>Topics marked complete</span>
+        </article>
       </section>
 
       <section className="category-strip" aria-label="Topic priorities">
