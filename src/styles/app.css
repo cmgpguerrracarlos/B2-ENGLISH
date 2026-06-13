@@ -124,6 +124,7 @@
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
 .app-header-copy {
@@ -146,6 +147,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+.page-stack {
+  max-width: 88rem;
 }
 
 .hero-card,
@@ -790,17 +795,54 @@
 
 .topic-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   align-items: start;
 }
 
+.topic-main {
+  min-width: 0;
+}
+
+.topic-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-sidebar-card {
+  background: var(--panel-bg);
+}
+
 .topic-toc {
-  position: sticky;
-  top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+}
+
+.topic-toc-mobile {
+  display: none;
+}
+
+.topic-toc-mobile summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.8rem 0.95rem;
+  border-radius: 1rem;
+  background: var(--panel-strong);
+  border: 1px solid var(--border-soft);
+  font-weight: 700;
+}
+
+.topic-toc-mobile summary::-webkit-details-marker {
+  display: none;
+}
+
+.topic-toc-mobile-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  padding-top: 0.7rem;
 }
 
 .topic-toc a {
@@ -858,8 +900,7 @@
     grid-template-columns: 1fr;
   }
 
-  .topic-toc {
-    position: static;
+  .topic-sidebar {
     order: -1;
   }
 
@@ -871,6 +912,179 @@
   .toolkit-spotlight {
     grid-row: auto;
     grid-column: auto;
+  }
+}
+
+@media (min-width: 760px) and (max-width: 1180px) {
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .hero-card h2,
+  .topic-hero h2 {
+    font-size: 2.05rem;
+  }
+
+  .content-panel h3,
+  .study-toolkit h3,
+  .progress-panel h2 {
+    font-size: 1.45rem;
+  }
+
+  .topic-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .app-main {
+    padding: 1rem 1.1rem 1.4rem;
+  }
+
+  .page-stack {
+    max-width: 72rem;
+  }
+
+  .hero-card,
+  .topic-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .topic-view-switch {
+    position: sticky;
+    top: 1rem;
+    z-index: 8;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--panel-bg) 92%, transparent);
+    border: 1px solid var(--border-soft);
+    backdrop-filter: blur(10px);
+  }
+
+  .topic-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .topic-toc {
+    grid-column: 1 / -1;
+  }
+
+  .topic-toc-mobile {
+    display: block;
+  }
+
+  .topic-toc > .sidebar-title,
+  .topic-toc > a,
+  .topic-toc .related-topics {
+    display: none;
+  }
+
+  .topic-toc,
+  .topic-sidebar-card,
+  .topic-sidebar .progress-panel {
+    min-height: 100%;
+  }
+
+  .theory-grid,
+  .example-grid,
+  .practice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quality-grid,
+  .topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1181px) {
+  .app-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-card h2,
+  .topic-hero h2 {
+    font-size: 2.4rem;
+  }
+
+  .content-panel h3,
+  .study-toolkit h3 {
+    font-size: 1.55rem;
+  }
+
+  .topic-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .topic-main {
+    gap: 1.4rem;
+  }
+
+  .app-main {
+    padding: 1.4rem 1.6rem 2rem;
+  }
+
+  .page-stack {
+    max-width: 94rem;
+  }
+
+  .topic-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 1.25rem;
+  }
+
+  .topic-main {
+    max-width: 66rem;
+  }
+
+  .topic-sidebar {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
+
+  .topic-footer-nav {
+    position: sticky;
+    bottom: 1rem;
+    z-index: 7;
+    padding: 0.9rem 1rem;
+    border-radius: 1.2rem;
+    background: color-mix(in srgb, var(--panel-bg) 94%, transparent);
+    border: 1px solid var(--border-soft);
+    backdrop-filter: blur(10px);
+  }
+
+  .topic-view-switch {
+    position: sticky;
+    top: 1rem;
+    z-index: 8;
+    width: fit-content;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--panel-bg) 92%, transparent);
+    border: 1px solid var(--border-soft);
+    backdrop-filter: blur(10px);
+  }
+
+  .theory-grid,
+  .example-grid,
+  .practice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rule-list,
+  .mistake-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .quality-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

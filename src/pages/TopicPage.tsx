@@ -134,14 +134,6 @@ export function TopicPage() {
           </button>
         </section>
 
-        <TopicProgress
-          totalStudySections={reviewableSections.length}
-          reviewedStudySections={reviewedStudySections}
-          practiceSolved={solvedPracticeCount}
-          totalPractice={topic.practiceQuestions.length}
-          isTopicCompleted={isTopicCompleted}
-        />
-
         {activeView === 'learn' && guide ? (
           <section className="study-toolkit">
             <article className="toolkit-lead">
@@ -377,7 +369,27 @@ export function TopicPage() {
         </section>
       </div>
 
-      <TopicToc topic={topic} />
+      <aside className="topic-sidebar">
+        <TopicProgress
+          totalStudySections={reviewableSections.length}
+          reviewedStudySections={reviewedStudySections}
+          practiceSolved={solvedPracticeCount}
+          totalPractice={topic.practiceQuestions.length}
+          isTopicCompleted={isTopicCompleted}
+        />
+        <section className="content-panel topic-sidebar-card" aria-label="Quick topic summary">
+          <div className="section-header">
+            <h3>Quick view</h3>
+            <span>{activeView === 'learn' ? 'Learn' : 'Practice'}</span>
+          </div>
+          <ul className="bullet-list">
+            <li>{topic.theorySections.length} theory blocks</li>
+            <li>{topic.examples.length} examples</li>
+            <li>{topic.practiceQuestions.length} practice tasks</li>
+          </ul>
+        </section>
+        <TopicToc topic={topic} />
+      </aside>
     </div>
   );
 }

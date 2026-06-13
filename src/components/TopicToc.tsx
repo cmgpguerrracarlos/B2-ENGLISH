@@ -19,6 +19,16 @@ const sections = [
 export function TopicToc({ topic }: TopicTocProps) {
   return (
     <aside className="topic-toc">
+      <details className="topic-toc-mobile">
+        <summary>Jump to section</summary>
+        <div className="topic-toc-mobile-links">
+          {sections.map((section) => (
+            <a key={section.id} href={`#${section.id}`}>
+              {section.label}
+            </a>
+          ))}
+        </div>
+      </details>
       <p className="sidebar-title">On this page</p>
       {sections.map((section) => (
         <a key={section.id} href={`#${section.id}`}>
