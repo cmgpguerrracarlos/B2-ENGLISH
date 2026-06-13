@@ -11,9 +11,9 @@ const sections = [
   { id: 'theory', label: 'Theory' },
   { id: 'rules', label: 'Rules' },
   { id: 'examples', label: 'Examples' },
-  { id: 'mistakes', label: 'Common mistakes' },
+  { id: 'mistakes', label: 'Mistakes' },
   { id: 'practice', label: 'Practice' },
-  { id: 'revision', label: 'Quick revision' },
+  { id: 'revision', label: 'Review' },
 ];
 
 export function TopicToc({ topic }: TopicTocProps) {

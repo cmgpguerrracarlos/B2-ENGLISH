@@ -13,7 +13,7 @@ export function TopicProgress({ totalSections, completedSections, practiceSolved
       <div className="progress-panel-head">
         <div>
           <p className="eyebrow">Progress</p>
-          <h2>{percent}% covered</h2>
+          <h2>{percent}% done</h2>
         </div>
         <span>
           {completedSections}/{totalSections} sections

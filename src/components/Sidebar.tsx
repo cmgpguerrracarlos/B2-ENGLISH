@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { grammarTopics } from '../data/grammarTopics';
 
+const priorityShortLabel = {
+  'Core B2 Grammar': 'Core',
+  'Important Supporting Topic': 'Support',
+  'Review Topic': 'Review',
+} as const;
+
 export function Sidebar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,7 +53,7 @@ export function Sidebar() {
             className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
           >
             <span className="sidebar-link-title">{topic.title}</span>
-            <small>{topic.priority === 'Core B2 Grammar' ? 'Core' : topic.priority === 'Important Supporting Topic' ? 'Support' : 'Review'}</small>
+            <small>{priorityShortLabel[topic.priority]}</small>
           </NavLink>
         ))}
       </nav>

@@ -31,11 +31,11 @@ export function Layout() {
       <div className="app-main">
         <header className="app-header">
           <div>
-            <p className="eyebrow">Static B2 Grammar App</p>
-            <h1>B2 English Grammar Lab</h1>
+            <p className="eyebrow">B2 grammar</p>
+            <h1>Grammar Lab</h1>
           </div>
           <p className="app-header-copy">
-            Theory, examples, realistic mistakes, and practice tasks designed to grow topic by topic without changing the UI.
+            Study one topic at a time with clear notes, examples, mistakes, and practice in a cleaner dark layout.
           </p>
           <button
             type="button"
@@ -43,7 +43,7 @@ export function Layout() {
             onClick={() => setTheme((current) => (current === 'light' ? 'dark' : 'light'))}
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
-            {theme === 'light' ? 'Dark mode' : 'Light mode'}
+            {theme === 'light' ? 'Dark' : 'Light'}
           </button>
         </header>
         <main className="app-content" id="main-content">

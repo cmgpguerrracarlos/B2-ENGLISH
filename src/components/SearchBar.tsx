@@ -9,7 +9,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
       <span>Search topics</span>
       <input
         type="search"
-        placeholder="Try: conditionals, articles, phrasal verbs..."
+        placeholder="Try: conditionals, articles, modals..."
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />

@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 import { GrammarTopic } from '../types/grammar';
 
+const priorityShortLabel = {
+  'Core B2 Grammar': 'Core',
+  'Important Supporting Topic': 'Support',
+  'Review Topic': 'Review',
+} as const;
+
 type TopicCardProps = {
   topic: GrammarTopic;
   isCompleted: boolean;
@@ -12,7 +18,7 @@ export function TopicCard({ topic, isCompleted, isFavorite, onToggleFavorite }: 
   return (
     <article className="topic-card">
       <div className="topic-card-top">
-        <span className={`badge badge-${topic.priority.toLowerCase().replace(/[^a-z]+/g, '-')}`}>{topic.priority}</span>
+        <span className={`badge badge-${topic.priority.toLowerCase().replace(/[^a-z]+/g, '-')}`}>{priorityShortLabel[topic.priority]}</span>
         <button
           type="button"
           className={isFavorite ? 'favorite-button active' : 'favorite-button'}
@@ -28,16 +34,16 @@ export function TopicCard({ topic, isCompleted, isFavorite, onToggleFavorite }: 
       <div className="topic-meta">
         <span>{topic.level}</span>
         <span>{topic.difficulty}</span>
-        <span>{topic.theorySections.length} sections</span>
+        <span>{topic.practiceQuestions.length} tasks</span>
       </div>
-      <div className="topic-tags">
-        {topic.tags.map((tag) => (
+      <div className="topic-tags" aria-label="Topic tags">
+        {topic.tags.slice(0, 2).map((tag) => (
           <span key={tag}>{tag}</span>
         ))}
       </div>
       <div className="topic-card-bottom">
         <Link to={`/topics/${topic.id}`} className="primary-link">
-          Open topic
+          Study topic
         </Link>
         {isCompleted ? <span className="status-pill">Completed</span> : <span className="status-pill muted">In progress</span>}
       </div>
