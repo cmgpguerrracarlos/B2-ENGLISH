@@ -3,6 +3,7 @@ import { SearchBar } from '../components/SearchBar';
 import { TopicCard } from '../components/TopicCard';
 import { grammarTopics } from '../data/grammarTopics';
 import { topicCategories } from '../data/topicMeta';
+import { topicQualitySummary, topicQualityTotals } from '../data/topicQuality';
 import { useLocalTopicState } from '../utils/useLocalTopicState';
 
 export function HomePage() {
@@ -66,6 +67,30 @@ export function HomePage() {
             <p>{category.description}</p>
           </article>
         ))}
+      </section>
+
+      <section className="quality-panel" aria-label="Content quality coverage">
+        <div className="section-header">
+          <div>
+            <p className="eyebrow">Phase 10 check</p>
+            <h3>Structured coverage review</h3>
+          </div>
+          <span>
+            {topicQualityTotals.meetingTargets}/{topicQualityTotals.totalTopics} topics hit the current depth target
+          </span>
+        </div>
+        <div className="quality-grid">
+          {topicQualitySummary.slice(0, 6).map((topic) => (
+            <article key={topic.id} className="quality-card">
+              <strong>{topic.title}</strong>
+              <p>{topic.priority}</p>
+              <small>
+                {topic.counts.theorySections} sections, {topic.counts.examples} examples, {topic.counts.commonMistakes} mistakes,{' '}
+                {topic.counts.practiceQuestions} tasks
+              </small>
+            </article>
+          ))}
+        </div>
       </section>
 
       <SearchBar value={query} onChange={setQuery} />

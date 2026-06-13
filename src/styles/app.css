@@ -129,7 +129,8 @@
 .topic-toc,
 .empty-state,
 .topic-hero,
-.category-strip article {
+.category-strip article,
+.quality-panel {
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(29, 36, 51, 0.08);
   border-radius: 1.4rem;
@@ -177,6 +178,28 @@
 
 .category-strip article {
   padding: 1rem;
+}
+
+.quality-panel {
+  padding: 1.2rem;
+}
+
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.quality-card {
+  padding: 0.95rem;
+  border-radius: 1rem;
+  background: #f8fbfb;
+  border: 1px solid rgba(29, 36, 51, 0.08);
+}
+
+.quality-card p,
+.quality-card small {
+  color: #5b6372;
 }
 
 .search-bar {
