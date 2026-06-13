@@ -1,17 +1,100 @@
 :root {
+  --bg-top: rgba(255, 208, 138, 0.7);
+  --bg-bottom: rgba(118, 184, 178, 0.35);
+  --bg-gradient-start: #f7f1e3;
+  --bg-gradient-mid: #fffdf7;
+  --bg-gradient-end: #eef5f2;
+  --text-main: #1d2433;
+  --text-muted: #4d5564;
+  --text-soft: #5b6372;
+  --text-accent: #8c5d24;
+  --panel-bg: rgba(255, 255, 255, 0.82);
+  --panel-strong: #f8fbfb;
+  --panel-soft: #eef5f2;
+  --panel-warm: #f7f1e3;
+  --panel-alt: #edf1f8;
+  --panel-option: #f5f2ea;
+  --panel-answer: #e6f4ef;
+  --border-soft: rgba(29, 36, 51, 0.08);
+  --border-input: rgba(29, 36, 51, 0.14);
+  --sidebar-bg: rgba(20, 38, 50, 0.92);
+  --sidebar-text: #f6f7f2;
+  --sidebar-soft: rgba(246, 247, 242, 0.7);
+  --sidebar-card: rgba(255, 255, 255, 0.04);
+  --sidebar-active: rgba(242, 168, 91, 0.18);
+  --brand-grad-start: #f2a85b;
+  --brand-grad-end: #f7de7a;
+  --brand-text: #16202b;
+  --accent-grad-start: #f2a85b;
+  --accent-grad-end: #63a89f;
+  --link-strong: #173b48;
+  --link-soft: #36507f;
+  --focus-ring: rgba(242, 168, 91, 0.9);
+  --shadow-color: rgba(42, 48, 67, 0.08);
+  --status-green-bg: #e6f4ef;
+  --status-green-text: #0f6f4d;
+  --status-gold-bg: #fff2d7;
+  --status-gold-text: #9a5b06;
+  --status-blue-bg: #e8edf7;
+  --status-blue-text: #36507f;
+  --button-text-dark: #20324e;
+  --button-text-light: #f8fafc;
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #1d2433;
+  color: var(--text-main);
   background:
-    radial-gradient(circle at top left, rgba(255, 208, 138, 0.7), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(118, 184, 178, 0.35), transparent 34%),
-    linear-gradient(180deg, #f7f1e3 0%, #fffdf7 48%, #eef5f2 100%);
+    radial-gradient(circle at top left, var(--bg-top), transparent 28%),
+    radial-gradient(circle at bottom right, var(--bg-bottom), transparent 34%),
+    linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 48%, var(--bg-gradient-end) 100%);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg-top: rgba(54, 90, 125, 0.35);
+  --bg-bottom: rgba(20, 117, 101, 0.22);
+  --bg-gradient-start: #0c1520;
+  --bg-gradient-mid: #111b28;
+  --bg-gradient-end: #13232d;
+  --text-main: #eef4ff;
+  --text-muted: #c2cbdb;
+  --text-soft: #a5b0c2;
+  --text-accent: #f0c482;
+  --panel-bg: rgba(18, 28, 41, 0.88);
+  --panel-strong: #1a2535;
+  --panel-soft: #1b3440;
+  --panel-warm: #2d2a20;
+  --panel-alt: #243246;
+  --panel-option: #2c3442;
+  --panel-answer: #1b3b35;
+  --border-soft: rgba(216, 226, 255, 0.1);
+  --border-input: rgba(216, 226, 255, 0.16);
+  --sidebar-bg: rgba(8, 14, 22, 0.96);
+  --sidebar-text: #f4f7fb;
+  --sidebar-soft: rgba(244, 247, 251, 0.72);
+  --sidebar-card: rgba(255, 255, 255, 0.06);
+  --sidebar-active: rgba(240, 196, 130, 0.18);
+  --brand-grad-start: #f0c482;
+  --brand-grad-end: #83c6b9;
+  --brand-text: #152026;
+  --accent-grad-start: #f0c482;
+  --accent-grad-end: #5eb4a4;
+  --link-strong: #7ec3da;
+  --link-soft: #9db6ff;
+  --focus-ring: rgba(240, 196, 130, 0.95);
+  --shadow-color: rgba(0, 0, 0, 0.28);
+  --status-green-bg: #14362c;
+  --status-green-text: #8cddb9;
+  --status-gold-bg: #3d3018;
+  --status-gold-text: #f0c482;
+  --status-blue-bg: #1b2942;
+  --status-blue-text: #a8c4ff;
+  --button-text-dark: #edf3ff;
+  --button-text-light: #0f1720;
 }
 
 * {
@@ -25,6 +108,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  color: var(--text-main);
+  background: transparent;
 }
 
 button,
@@ -45,6 +130,6 @@ button {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid rgba(242, 168, 91, 0.9);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
