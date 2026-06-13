@@ -529,6 +529,30 @@
   background: linear-gradient(90deg, var(--accent-grad-start), var(--accent-grad-end));
 }
 
+.progress-bar.small {
+  height: 0.45rem;
+}
+
+.progress-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.progress-detail-grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: var(--panel-strong);
+  border: 1px solid var(--border-soft);
+}
+
+.progress-detail-grid strong {
+  font-size: 1.1rem;
+}
+
 .progress-note {
   margin: 0;
   color: var(--text-muted);
@@ -548,6 +572,11 @@
 
 .content-accordion {
   overflow: hidden;
+}
+
+.accordion-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .accordion-summary {
@@ -589,6 +618,23 @@
 
 .subsection-intro h4 {
   margin: 0;
+}
+
+.content-kicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: var(--panel-soft);
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.section-review-button.is-reviewed {
+  background: var(--status-green-bg);
+  color: var(--status-green-text);
 }
 
 .study-toolkit {
@@ -665,6 +711,10 @@
   color: var(--text-main);
 }
 
+.mistake-note {
+  color: var(--text-soft);
+}
+
 .practice-card {
   display: flex;
   flex-direction: column;
@@ -720,6 +770,22 @@
   display: block;
   font-size: 1.6rem;
   margin-bottom: 0.25rem;
+}
+
+.topic-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.practice-focus-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.practice-lead-panel {
+  background: color-mix(in srgb, var(--panel-answer) 40%, var(--panel-bg));
 }
 
 .topic-layout {
@@ -915,7 +981,8 @@
   .category-strip,
   .hero-stats,
   .progress-snapshot,
-  .summary-grid {
+  .summary-grid,
+  .progress-detail-grid {
     grid-template-columns: 1fr;
   }
 

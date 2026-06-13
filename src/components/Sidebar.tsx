@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { grammarTopics } from '../data/grammarTopics';
-
-const priorityShortLabel = {
-  'Core B2 Grammar': 'Core',
-  'Important Supporting Topic': 'Support',
-  'Review Topic': 'Review',
-} as const;
+import { priorityShortLabel } from '../utils/topicUi';
 
 export function Sidebar() {
   const location = useLocation();

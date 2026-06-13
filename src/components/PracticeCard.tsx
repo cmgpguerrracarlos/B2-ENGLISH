@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PracticeQuestion } from '../types/grammar';
+import { formatPracticeType } from '../utils/topicUi';
 
 type PracticeCardProps = {
   question: PracticeQuestion;
@@ -13,7 +14,7 @@ export function PracticeCard({ question, isCompleted, onToggleCompleted }: Pract
   return (
     <article className="practice-card">
       <div className="practice-card-head">
-        <span className="practice-type">{question.type.replace(/-/g, ' ')}</span>
+        <span className="practice-type">{formatPracticeType(question.type)}</span>
         <div className="practice-actions">
           <button type="button" onClick={() => setShowAnswer((current) => !current)}>
             {showAnswer ? 'Hide answer' : 'Show answer'}

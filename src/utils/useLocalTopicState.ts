@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 const completedKey = 'b2-grammar-completed-topics';
 const favoritesKey = 'b2-grammar-favorite-topics';
 const completedPracticeKey = 'b2-grammar-completed-practice';
+const reviewedSectionsKey = 'b2-grammar-reviewed-sections';
 
 const readStoredArray = (key: string) => {
   if (typeof window === 'undefined') {
@@ -21,11 +22,13 @@ export function useLocalTopicState() {
   const [completedTopics, setCompletedTopics] = useState<string[]>([]);
   const [favoriteTopics, setFavoriteTopics] = useState<string[]>([]);
   const [completedPractice, setCompletedPractice] = useState<string[]>([]);
+  const [reviewedSections, setReviewedSections] = useState<string[]>([]);
 
   useEffect(() => {
     setCompletedTopics(readStoredArray(completedKey));
     setFavoriteTopics(readStoredArray(favoritesKey));
     setCompletedPractice(readStoredArray(completedPracticeKey));
+    setReviewedSections(readStoredArray(reviewedSectionsKey));
   }, []);
 
   const markTopicCompleted = (topicId: string) => {
@@ -54,12 +57,24 @@ export function useLocalTopicState() {
     });
   };
 
+  const toggleSectionReviewed = (sectionId: string) => {
+    setReviewedSections((current) => {
+      const next = current.includes(sectionId)
+        ? current.filter((entry) => entry !== sectionId)
+        : [...current, sectionId];
+      window.localStorage.setItem(reviewedSectionsKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
   return {
     completedTopics,
     favoriteTopics,
     completedPractice,
+    reviewedSections,
     markTopicCompleted,
     toggleFavorite,
     togglePracticeCompleted,
+    toggleSectionReviewed,
   };
 }

@@ -4,19 +4,24 @@ import { TopicProgress } from '../components/TopicProgress';
 import { TopicToc } from '../components/TopicToc';
 import { topicGuides } from '../data/topicGuides';
 import { grammarTopics, grammarTopicsById } from '../data/grammarTopics';
+import { useState } from 'react';
 import { useLocalTopicState } from '../utils/useLocalTopicState';
-
-const priorityShortLabel = {
-  'Core B2 Grammar': 'Core',
-  'Important Supporting Topic': 'Support',
-  'Review Topic': 'Review',
-} as const;
+import { priorityShortLabel } from '../utils/topicUi';
 
 export function TopicPage() {
+  const [activeView, setActiveView] = useState<'learn' | 'practice'>('learn');
   const { topicId } = useParams();
   const topic = topicId ? grammarTopicsById[topicId] : undefined;
-  const { completedTopics, completedPractice, markTopicCompleted, favoriteTopics, toggleFavorite, togglePracticeCompleted } =
-    useLocalTopicState();
+  const {
+    completedTopics,
+    completedPractice,
+    reviewedSections,
+    markTopicCompleted,
+    favoriteTopics,
+    toggleFavorite,
+    togglePracticeCompleted,
+    toggleSectionReviewed,
+  } = useLocalTopicState();
 
   if (!topic) {
     return <Navigate to="/not-found" replace />;
@@ -26,12 +31,35 @@ export function TopicPage() {
   const previousTopic = currentIndex > 0 ? grammarTopics[currentIndex - 1] : null;
   const nextTopic = currentIndex < grammarTopics.length - 1 ? grammarTopics[currentIndex + 1] : null;
   const guide = topicGuides[topic.id];
-  const totalSections = 7;
+  const reviewableSections = [
+    { id: `${topic.id}:theory`, label: 'Theory' },
+    { id: `${topic.id}:rules`, label: 'Rules' },
+    { id: `${topic.id}:examples`, label: 'Examples' },
+    { id: `${topic.id}:mistakes`, label: 'Mistakes' },
+    { id: `${topic.id}:revision`, label: 'Review' },
+  ];
   const solvedPracticeCount = topic.practiceQuestions.filter((question) => completedPractice.includes(question.id)).length;
-  const completedSections = Math.min(
-    totalSections,
-    (completedTopics.includes(topic.id) ? 5 : 3) + Math.round((solvedPracticeCount / topic.practiceQuestions.length) * 2),
-  );
+  const reviewedStudySections = reviewableSections.filter((section) => reviewedSections.includes(section.id)).length;
+  const isTopicCompleted = completedTopics.includes(topic.id);
+  const topicChecklist = [
+    `Review the ${topic.title.toLowerCase()} theory before moving on.`,
+    'Say the rule in your own words before checking the answer.',
+    'Use mistakes as a self-check, not just as extra reading.',
+  ];
+
+  const renderSectionAction = (sectionId: string) => {
+    const isReviewed = reviewedSections.includes(sectionId);
+
+    return (
+      <button
+        type="button"
+        className={isReviewed ? 'secondary-button section-review-button is-reviewed' : 'secondary-button section-review-button'}
+        onClick={() => toggleSectionReviewed(sectionId)}
+      >
+        {isReviewed ? 'Reviewed' : 'Mark reviewed'}
+      </button>
+    );
+  };
 
   return (
     <div className="topic-layout">
@@ -56,19 +84,39 @@ export function TopicPage() {
               {favoriteTopics.includes(topic.id) ? 'Saved' : 'Save'}
             </button>
             <button type="button" className="primary-button" onClick={() => markTopicCompleted(topic.id)}>
-              Complete
+              {isTopicCompleted ? 'Completed' : 'Complete'}
             </button>
           </div>
         </section>
 
+        <section className="topic-view-switch" aria-label="Topic view">
+          <button
+            type="button"
+            className={activeView === 'learn' ? 'filter-chip active' : 'filter-chip'}
+            onClick={() => setActiveView('learn')}
+            aria-pressed={activeView === 'learn'}
+          >
+            Learn
+          </button>
+          <button
+            type="button"
+            className={activeView === 'practice' ? 'filter-chip active' : 'filter-chip'}
+            onClick={() => setActiveView('practice')}
+            aria-pressed={activeView === 'practice'}
+          >
+            Practice
+          </button>
+        </section>
+
         <TopicProgress
-          totalSections={totalSections}
-          completedSections={completedSections}
+          totalStudySections={reviewableSections.length}
+          reviewedStudySections={reviewedStudySections}
           practiceSolved={solvedPracticeCount}
           totalPractice={topic.practiceQuestions.length}
+          isTopicCompleted={isTopicCompleted}
         />
 
-        {guide ? (
+        {activeView === 'learn' && guide ? (
           <section className="study-toolkit">
             <article className="toolkit-lead">
               <p className="eyebrow">Study toolkit</p>
@@ -107,13 +155,17 @@ export function TopicPage() {
           </section>
         ) : null}
 
-        <section className="content-accordion-group">
+        {activeView === 'learn' ? (
+          <section className="content-accordion-group">
           <details className="content-panel content-accordion" id="theory" open>
             <summary className="section-header accordion-summary">
               <h3>Theory</h3>
               <span>{topic.theorySections.length} blocks</span>
             </summary>
             <div className="accordion-content">
+              <div className="accordion-actions">
+                {renderSectionAction(`${topic.id}:theory`)}
+              </div>
               <div className="subsection-intro">
                 <h4>Goals</h4>
                 <ul className="bullet-list">
@@ -125,6 +177,7 @@ export function TopicPage() {
               <div className="theory-grid">
                 {topic.theorySections.map((section) => (
                   <article key={section.id} className="theory-card">
+                    <span className="content-kicker">Rule focus</span>
                     <h4>{section.title}</h4>
                     <p>{section.explanation}</p>
                     <ul className="bullet-list">
@@ -144,6 +197,9 @@ export function TopicPage() {
               <span>{topic.grammarRules.length} rules</span>
             </summary>
             <div className="accordion-content">
+              <div className="accordion-actions">
+                {renderSectionAction(`${topic.id}:rules`)}
+              </div>
               <div className="rule-list">
                 {topic.grammarRules.map((rule) => (
                   <article key={rule.id} className="rule-card">
@@ -161,9 +217,13 @@ export function TopicPage() {
               <span>{topic.examples.length} examples</span>
             </summary>
             <div className="accordion-content">
+              <div className="accordion-actions">
+                {renderSectionAction(`${topic.id}:examples`)}
+              </div>
               <div className="example-grid">
                 {topic.examples.map((example) => (
                   <article key={example.id} className="example-card">
+                    <span className="content-kicker">Model sentence</span>
                     <p className="example-sentence">{example.sentence}</p>
                     <p>{example.explanation}</p>
                   </article>
@@ -178,6 +238,9 @@ export function TopicPage() {
               <span>{topic.commonMistakes.length} checks</span>
             </summary>
             <div className="accordion-content">
+              <div className="accordion-actions">
+                {renderSectionAction(`${topic.id}:mistakes`)}
+              </div>
               <div className="mistake-list">
                 {topic.commonMistakes.map((mistake) => (
                   <article key={mistake.id} className="mistake-card">
@@ -187,12 +250,31 @@ export function TopicPage() {
                     <p>
                       <strong>Correct:</strong> {mistake.correct}
                     </p>
-                    <p>{mistake.explanation}</p>
+                    <p className="mistake-note">{mistake.explanation}</p>
                   </article>
                 ))}
               </div>
             </div>
           </details>
+          </section>
+        ) : null}
+
+        {activeView === 'practice' ? (
+          <section className="practice-focus-stack">
+            <section className="content-panel practice-lead-panel">
+              <div className="section-header">
+                <div>
+                  <p className="eyebrow">Practice mode</p>
+                  <h3>Work, check, move on</h3>
+                </div>
+                <span>{solvedPracticeCount}/{topic.practiceQuestions.length} solved</span>
+              </div>
+              <ul className="bullet-list">
+                {topicChecklist.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
 
           <details className="content-panel content-accordion" id="practice" open>
             <summary className="section-header accordion-summary">
@@ -219,6 +301,9 @@ export function TopicPage() {
               <span>{topic.quickRevision.length} points</span>
             </summary>
             <div className="accordion-content">
+              <div className="accordion-actions">
+                {renderSectionAction(`${topic.id}:revision`)}
+              </div>
               <ul className="bullet-list">
                 {topic.quickRevision.map((point) => (
                   <li key={point}>{point}</li>
@@ -226,7 +311,8 @@ export function TopicPage() {
               </ul>
             </div>
           </details>
-        </section>
+          </section>
+        ) : null}
 
         <section className="content-panel summary-panel">
           <div className="section-header">

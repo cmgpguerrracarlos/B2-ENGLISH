@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom';
 import { GrammarTopic } from '../types/grammar';
-
-const priorityShortLabel = {
-  'Core B2 Grammar': 'Core',
-  'Important Supporting Topic': 'Support',
-  'Review Topic': 'Review',
-} as const;
+import { priorityShortLabel } from '../utils/topicUi';
 
 type TopicCardProps = {
   topic: GrammarTopic;
